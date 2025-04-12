@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>CPlusPlusProperty.qml</file>
+        <file>MessageList.qml</file>
+        <file>PropertyValueSources.qml</file>
+    </qresource>
+</RCC>
