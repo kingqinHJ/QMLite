@@ -43,6 +43,7 @@ else()
           randomnumbergenerator.h randomnumbergenerator.cpp
           resources.qrc
           messagequeue.h messagequeue.cpp
+          myparserstatus.h myparserstatus.cpp
         )
     endif()
 endif()

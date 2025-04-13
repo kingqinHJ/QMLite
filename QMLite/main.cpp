@@ -6,6 +6,7 @@
 #include"messageboardattachtype.h"
 #include "randomnumbergenerator.h"
 #include "messagequeue.h"
+#include "myparserstatus.h"
 
 void RegisterType()
 {
@@ -15,6 +16,7 @@ void RegisterType()
     qmlRegisterType<MessageBoard>("com.mycompany.messageboard",1,0,"MessageBoard");
     qmlRegisterType<RandomNumberGenerator>("com.mycompany.RandomNumberGenerator",1,0,"RandomNumberGenerator");
     qmlRegisterType<MessageQueue>("com.mycompany.messageQueue",1,0,"MessageQueue");
+    qmlRegisterType<MyParserStatus>("com.mycompany.myParserStatus",1,0,"MyParserStatus");
 }
 
 int main(int argc, char *argv[])

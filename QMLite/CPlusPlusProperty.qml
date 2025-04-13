@@ -5,6 +5,7 @@ import com.mycompany.message 1.0
 import com.mycompany.messagebody 1.0
 import com.mycompany.messageboard 1.0
 
+//此处为附加属性
 Item {
     Item {
         id: name
@@ -17,9 +18,9 @@ Item {
                 content:qsTr("帅哥")
             }
             author.name:"MR QIN"
-            author.email:"844926748@qq.com"
+            author.email:"844926748@qq.com"                            //使用C++属性
             onTestSignal:console.log("slot")
-//            MessageBoard.onExpireChange:console.log("Message 的附加属性信号触发")             //附加属性
+//            MessageBoard.onExpireChange:console.log("Message 的附加属性信号触发")             //附加属性，即在不在C++类中定义属性，能够附加的属性
         }
 
         MessageBoard{

@@ -74,6 +74,7 @@ ApplicationWindow {
                 ListElement { title: "CPlusPlusProperty"; source: "qrc:/CPlusPlusProperty.qml" }
                 ListElement { title: "CPlusPlusPropertyList"; source: "qrc:/MessageList.qml" }
                 ListElement { title: "PropertyValueSources"; source: "qrc:/PropertyValueSources.qml" }
+                ListElement { title: "QQmlParserStatus"; source: "qrc:/QmlParserStatus.qml" }
             }
 
             ScrollIndicator.vertical: ScrollIndicator { }

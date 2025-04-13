@@ -4,5 +4,6 @@
         <file>CPlusPlusProperty.qml</file>
         <file>MessageList.qml</file>
         <file>PropertyValueSources.qml</file>
+        <file>QmlParserStatus.qml</file>
     </qresource>
 </RCC>
