@@ -9,8 +9,22 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# MSVC: force UTF-8 source/execution charset to avoid C4819 warnings on Chinese comments
+if(MSVC)
+    add_compile_options(/utf-8)
+endif()
+
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Quick)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick)
+
+# ───────────────────────────────────────────────────────────────
+# 子模块：QuickQanava 图可视化引擎
+# ───────────────────────────────────────────────────────────────
+# 构建模式切换（取消注释其中一行）：
+#   set(QUICKQANAVA_BUILD_STATIC ON)   # 编译为静态库
+#   set(QUICKQANAVA_BUILD_SHARED ON)   # 编译为动态库
+# 默认（不设置）：OBJECT 库，源码直接合并到主工程中
+add_subdirectory(modules/quickqanava)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -49,7 +63,11 @@ else()
 endif()
 
 target_link_libraries(QMLite
-  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
+  PRIVATE
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Quick
+    quickqanava
+)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

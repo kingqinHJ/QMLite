@@ -7,6 +7,7 @@
 #include "randomnumbergenerator.h"
 #include "messagequeue.h"
 #include "myparserstatus.h"
+#include "modules/quickqanava/src/test/GtpoTest.h"
 
 void RegisterType()
 {
@@ -17,6 +18,7 @@ void RegisterType()
     qmlRegisterType<RandomNumberGenerator>("com.mycompany.RandomNumberGenerator",1,0,"RandomNumberGenerator");
     qmlRegisterType<MessageQueue>("com.mycompany.messageQueue",1,0,"MessageQueue");
     qmlRegisterType<MyParserStatus>("com.mycompany.myParserStatus",1,0,"MyParserStatus");
+    qmlRegisterType<GtpoTest>("com.mycompany.gtpo",1,0,"GtpoTest");
 }
 
 int main(int argc, char *argv[])

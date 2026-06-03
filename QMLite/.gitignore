@@ -1,0 +1,78 @@
+# ============================================================
+# C++ / Qt / CMake 项目忽略项
+# ============================================================
+
+# ── CMake 构建输出 ──
+build/
+build-*/
+cmake-build-*/
+out/
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps/
+
+# ── Qt Creator 用户特定配置（每台机器不同） ──
+*.user
+*.user.*
+CMakeLists.txt.user
+CMakeLists.txt.user.*
+.qmake.stash
+
+# ── Qt 自动生成文件 ──
+*.moc
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+
+# ── 编译产物 ──
+*.o
+*.obj
+*.exe
+*.dll
+*.lib
+*.a
+*.so
+*.so.*
+*.dylib
+*.pdb
+*.ilk
+*.exp
+*.manifest
+*.res
+
+# ── 预编译头 ──
+*.gch
+*.pch
+
+# ── IDE 配置 ──
+.vscode/
+.idea/
+.vs/
+*.suo
+*.ncb
+*.sdf
+*.opensdf
+*.sln.docstates
+
+# ── 调试/日志 ──
+*.log
+*.stackdump
+
+# ── 系统文件 ──
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── 包管理器（如 Conan / vcpkg） ──
+conanbuildinfo.txt
+conaninfo.txt
+graph_info.json
+vcpkg_installed/

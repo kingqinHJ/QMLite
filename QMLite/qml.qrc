@@ -5,5 +5,10 @@
         <file>MessageList.qml</file>
         <file>PropertyValueSources.qml</file>
         <file>QmlParserStatus.qml</file>
+        <file>pages/QuickQanavaShell.qml</file>
+        <file>pages/GraphPhase1.qml</file>
+        <file>pages/GraphPhase2.qml</file>
+        <file>pages/GraphPhase3.qml</file>
+        <file>pages/GraphPhase4.qml</file>
     </qresource>
 </RCC>

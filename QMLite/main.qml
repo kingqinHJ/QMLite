@@ -5,10 +5,10 @@ import QtQuick.Layouts 1.15
 
 ApplicationWindow {
     id:window
-    width: 500
-    height: 400
+    width: 1280
+    height: 800
     visible: true
-    title: message ? message.name : "Default Title"
+    title: "QMLite — Qt/QML 学习工程"
 
     Action {
         id: navigateBackAction
@@ -75,6 +75,7 @@ ApplicationWindow {
                 ListElement { title: "CPlusPlusPropertyList"; source: "qrc:/MessageList.qml" }
                 ListElement { title: "PropertyValueSources"; source: "qrc:/PropertyValueSources.qml" }
                 ListElement { title: "QQmlParserStatus"; source: "qrc:/QmlParserStatus.qml" }
+                ListElement { title: "QuickQanava"; source: "qrc:/pages/QuickQanavaShell.qml" }
             }
 
             ScrollIndicator.vertical: ScrollIndicator { }
