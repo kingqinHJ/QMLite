@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quickqanava/gtpo/observable.h>
+#include "observable.h"
 
 namespace gtpo {
 

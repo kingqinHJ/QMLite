@@ -1,7 +1,11 @@
 #pragma once
 
+#include<iostream>
 #include <vector>
 #include <memory>
+#include <cstddef>
+#include <functional>
+#include <utility>
 
 namespace gtpo {
 
@@ -13,6 +17,13 @@ namespace gtpo {
  */
 class abstract_observable {
     // TODO: 实现
+    abstract_observable() = default;
+    virtual ~abstract_observable() = default;
+
+    abstract_observable(abstract_observable const &) = default;
+    abstract_observable &operator=(abstract_observable const &) = default;
+    abstract_observable(abstract_observable &&) = default;
+    abstract_observable &operator=(abstract_observable &&) = default;
 };
 
 /*! \brief 观察者存储容器。
@@ -21,7 +32,20 @@ class abstract_observable {
  */
 template <class observer_t>
 class observable : public abstract_observable {
-    // TODO: 实现
+public:
+    observable():abstract_observable() {}
+    virtual ~observable noexcept{
+        _observer.clear();
+    }
+    observable(const observable &) = default;
+    observable &operator=(const observable &) = default;
+
+public:
+    inline auto clear()->void{
+        _observer.clear();
+    }
+protected:
+    observer_t _observer;
 };
 
 /*! \brief 节点级可观察混入。
