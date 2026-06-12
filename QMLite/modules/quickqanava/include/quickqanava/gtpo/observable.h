@@ -90,7 +90,7 @@ public:
         super_t::add_observer(std::move(observer));
     }
 
-    auto notify_in_node_insert(node_t &node,node_t& node,const edge_t& edge) -> void override {
+    auto notify_in_node_insert(node_t &target,node_t& node,const edge_t& edge) -> void override {
         for(auto &observer:super_t::observers())
             if(observer)
                 observer->notify_in_node_insert(target,node,edge);

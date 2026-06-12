@@ -24,12 +24,18 @@ namespace gtpo {
  *     get_in_edges / get_out_edges
  * - 组相关：set_group / get_group / is_group / get_nodes / has_node
  */
-template <class node_base_t, class graph_t, class node_t, class edge_t, class group_t>
-class node : public node_base_t,
-             public graph_property_impl<graph_t>
+template<class code_base_t,
+    class graph_t,
+    class node_t,
+    class edge_t,
+    class group_t>
+class node:public code_base_t,
+           public graph_property_impl<graph_t>,
+           public gtpo::observable_node<node_t,edge_t>
 {
-    // TODO: 实现
-};
+public:
+    friend graph_t;
+    //using nodes_t=
 
 } // ::gtpo
 
