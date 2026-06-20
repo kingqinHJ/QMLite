@@ -54,10 +54,10 @@ public:
 
     node_observer() noexcept: observer<node_t>() {}
     virtual ~node_observer() =default;
-    node_observer(const node_observer<node_t, edge_t> &other) =default;
-    node_observer(node_observer<node_t, edge_t> &&other) noexcept =default;
-    node_observer &operator=(const node_observer<node_t, edge_t> &other) =default;
-    node_observer &operator=(node_observer<node_t, edge_t> &&other) noexcept =default;
+    node_observer(const node_observer<node_t, edge_t> &other) =delete;
+    node_observer(node_observer<node_t, edge_t> &&other) noexcept =delete;
+    node_observer &operator=(const node_observer<node_t, edge_t> &other) =delete;
+    node_observer &operator=(node_observer<node_t, edge_t> &&other) noexcept =delete;
 protected:
     virtual void on_in_node_insert(node_t &target,node_t &source, edge_t &edge) noexcept {
         static_cast<void>(target);static_cast<void>(source);static_cast<void>(edge);
