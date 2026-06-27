@@ -478,7 +478,7 @@ public:
 
     // 虚析构：本类作为基类被继承，必须有虚析构防止多态 delete 时内存泄漏
     // 【参考】《C++ Primer 第5版》§15.7.1 Virtual Destructors (P622)
-    virtual ~graph_property_impl() = default;
+    ~graph_property_impl() noexcept = default;
 
     // 拷贝操作：= default（逐成员拷贝裸指针，不拥有所有权所以浅拷贝就够了）
     // 【参考】《C++ Primer 第5版》§13.1.5 Using = default (P496-509)
@@ -511,7 +511,9 @@ protected:
     //! 解绑（置空）
     inline auto set_graph(std::nullptr_t) noexcept -> void { _graph = nullptr; }
 
-private:
+    inline auto set_graph(void* graph)noexcept{ _graph=reinterpret_cast<graph_t*>(graph); }
+
+public:
     graph_t* _graph = nullptr;
 };
 

@@ -383,20 +383,20 @@ struct container_adapter<std::unordered_set<T>> {
 };  
 // TODO: 全特化 std::unordered_set<T>
 template <typename T>
-struct container_adapter<std::QVector<T>> {
-    inline static void insert(T t,std::QVector<T> &c) {
+struct container_adapter<QVector<T>> {
+    inline static void insert(T t,QVector<T> &c) {
         c.append(t);
     }
-    inline static void insert(T t,std::QVector<T> &c,int i) {
+    inline static void insert(T t,QVector<T> &c,int i) {
         c.insert(i,t);
     }
-    inline static bool remove(T t,std::QVector<T> &c) {
+    inline static bool remove(T t,QVector<T> &c) {
         c.removeAll(t);
     }
-    inline static std::size_t size(const std::QVector<T> &c) {
+    inline static std::size_t size(const QVector<T> &c) {
         return c.size();
     }
-    inline static bool contains(T t,const std::QVector<T> &c) {
+    inline static bool contains(const QVector<T> &c,T t) {
         return c.contains(t);
     }
     inline static void reserve(QVector<T> &c,std::size_t n) {
@@ -413,7 +413,7 @@ struct container_adapter<QSet<T>> {
         c.insert(i,t);
     }
     inline static void remove(T t,QSet<T> &c) {
-        c.erase(t);
+        c.remove(t);
     }
     inline static std::size_t size(const QSet<T> &c) {
         return c.size();

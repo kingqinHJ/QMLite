@@ -1,4 +1,4 @@
-#pragma once
+on_in_node_insert#pragma once
 
 #include <cstddef>
 #include <functional>
@@ -28,13 +28,13 @@ public:
     target_t* get_target() const noexcept { return _target; }
     void set_target(target_t* target) noexcept { _target = target; }
 
-    inline auto get_name() const noexcept -> std::string const & { return _name; }
+    inline auto getName() const noexcept -> std::string const & { return _name; }
 
     inline auto enable() noexcept -> void { _enabled = true; }
     inline auto disable() noexcept -> void { _enabled = false; }
     inline auto is_enabled() const noexcept -> bool { return _enabled; }
 protected:
-    void set_name(std::string const &name) noexcept { _name = name; }
+    void setName(std::string const &name) noexcept { _name = name; }
 protected:
     target_t* _target = nullptr;
     bool _enabled = true;
@@ -59,22 +59,22 @@ public:
     node_observer &operator=(const node_observer<node_t, edge_t> &other) =delete;
     node_observer &operator=(node_observer<node_t, edge_t> &&other) noexcept =delete;
 protected:
-    virtual void on_in_node_insert(node_t &target,node_t &source, edge_t &edge) noexcept {
+    virtual void on_in_node_inserted(node_t &target,node_t &source, edge_t &edge) noexcept {
         static_cast<void>(target);static_cast<void>(source);static_cast<void>(edge);
     }
-    virtual void on_in_node_remove(node_t &target,node_t &source, edge_t &edge) noexcept {
+    virtual void on_in_node_removed(node_t &target,node_t &source, edge_t &edge) noexcept {
         static_cast<void>(target);static_cast<void>(source);static_cast<void>(edge);
     }
-    virtual void on_in_node_remove(node_t &target) noexcept {
+    virtual void on_in_node_removed(node_t &target) noexcept {
         static_cast<void>(target);
     }
-    virtual void on_out_node_insert(node_t &target,node_t &destination, edge_t &edge) noexcept {
+    virtual void on_out_node_inserted(node_t &target,node_t &destination, edge_t &edge) noexcept {
         static_cast<void>(target);static_cast<void>(destination);static_cast<void>(edge);
     }
-    virtual void on_out_node_remove(node_t &target,node_t &destination, edge_t &edge) noexcept {
+    virtual void on_out_node_removed(node_t &target,node_t &destination, edge_t &edge) noexcept {
         static_cast<void>(target);static_cast<void>(destination);static_cast<void>(edge);
     }
-    virtual void on_out_node_remove(node_t &target) noexcept {
+    virtual void on_out_node_removed(node_t &target) noexcept {
         static_cast<void>(target);
     }
 };
@@ -98,22 +98,22 @@ public:
     graph_observer(const this_t &other) =delete;
     graph_observer &operator=(const this_t &other) =delete;
 protected:
-    virtual void on_node_insert(node_t &node) noexcept {
+    virtual void on_node_inserted(node_t &node) noexcept {
         static_cast<void>(node);
     }
-    virtual void on_node_remove(node_t &node) noexcept {
+    virtual void on_node_removed(node_t &node) noexcept {
         static_cast<void>(node);
     }
-    virtual void on_edge_insert(edge_t &edge) noexcept {
+    virtual void on_edge_inserted(edge_t &edge) noexcept {
         static_cast<void>(edge);
     }
-    virtual void on_edge_remove(edge_t &edge) noexcept {
+    virtual void on_edge_removed(edge_t &edge) noexcept {
         static_cast<void>(edge);
     }
-    virtual void on_group_insert(group_t &group) noexcept {
+    virtual void on_group_inserted(node_t &group) noexcept {
         static_cast<void>(group);
     }
-    virtual void on_group_remove(group_t &group) noexcept {
+    virtual void on_group_removed(node_t &group) noexcept {
         static_cast<void>(group);
     }
 };

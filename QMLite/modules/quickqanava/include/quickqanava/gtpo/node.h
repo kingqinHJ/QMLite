@@ -1,5 +1,12 @@
 #pragma once
+#include <unordered_set>
+#include <cassert>
+#include <iterator>
 
+#include"./graph_property.h"
+#include"./observer.h"
+#include"./observable.h"
+#include"./container_adapter.h"
 #include <quickqanava/gtpo/graph_property.h>
 
 namespace gtpo {

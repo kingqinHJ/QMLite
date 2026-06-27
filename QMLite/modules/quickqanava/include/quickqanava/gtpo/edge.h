@@ -2,7 +2,7 @@
 
 #include <quickqanava/gtpo/graph_property.h>
 #include <unordered_set>
-#include <assert>
+#include <cassert>
 #include <iterator>
 
 namespace gtpo {
@@ -27,11 +27,11 @@ class edge : public edge_base_t,
 public:
     using edge_t=edge<edge_base_t,graph_t,node_t>;     
     edge(edge_base_t* parent=nullptr) noexcept:edge_base_t{parent}{}
-    explicit edge(const node_t* src,const node_t* dst):edge_base_t{other},
-        _src{src},_dst{dst}
+    explicit edge(const node_t* src,const node_t* dst):edge_base_t{},
+        _src{src},_dst{dst}{}
     virtual ~edge(){
-        if(graph_property_impl<graph_t>!=nullptr)
-            std::cerr<< << "gtpo::edge<>::~edge(): Warning: an edge has been deleted before beeing " <<
+        if(graph_property_impl<graph_t>::_graph!=nullptr)
+            std::cerr<<"gtpo::edge<>::~edge(): Warning: an edge has been deleted before beeing " <<
                          "removed from the graph." << std::endl;
     }
     edge(const edge_t& other)=delete;
@@ -44,14 +44,14 @@ private:
     bool  _serializable{true};
 
 public:
-    inline auto get_src() const noexcept->node_t* { return _src; }   
+    inline auto get_src() const noexcept->node_t* const{ return _src; }   
     inline auto get_src() noexcept->node_t* { return _src; }    
-    inline auto get_dst() const noexcept->node_t* { return _dst; }
+    inline auto get_dst() const noexcept->node_t* const{ return _dst; }
     inline auto get_dst() noexcept->node_t* { return _dst; }
     inline auto set_src(node_t* src)noexcept->void { _src=src; }
     inline auto set_dst(node_t* dst)noexcept->void { _dst=dst; }
 
-private：
+private:
     node_t *_src{nullptr};
     node_t *_dst{nullptr};
 };

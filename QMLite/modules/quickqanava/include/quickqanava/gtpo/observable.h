@@ -16,6 +16,7 @@ namespace gtpo {
  * TODO: virtual ~abstract_observable() = default;
  */
 class abstract_observable {
+public:
     // TODO: 实现
     abstract_observable() = default;
     virtual ~abstract_observable() = default;
@@ -34,7 +35,7 @@ template <class observer_t>
 class observable : public abstract_observable {
 public:
     observable():abstract_observable() {}
-    virtual ~observable noexcept{
+    virtual ~observable() noexcept{
         _observer.clear();
     }
     observable(const observable &) = default;
@@ -44,11 +45,11 @@ public:
     inline auto clear()->void{
         _observer.clear();
     }
-    inline add_observer(std::unique_ptr<observer_t> observer)->void{
+    inline auto add_observer(std::unique_ptr<observer_t> observer)->void{
         _observer.emplace_back(std::move(observer));
     }
 
-    using observer_t=std::vector<std::unique_ptr<observer_t>>;
+    using observers_t=std::vector<std::unique_ptr<observer_t>>;
 
     inline auto has_observer() const noexcept -> bool {
         return !_observer.empty();
@@ -82,45 +83,45 @@ public:
     using super_t=observable<gtpo::node_observer<node_t,edge_t>>;
     observable_node() noexcept : super_t() {}
     ~observable_node() noexcept =default;
-    observable_node(const observable_node<node_t,edge_t> &) = default;
-    observable_node& operator=(observable_node<node_t,edge_t> const &) = default;
+    observable_node(const observable_node<node_t,edge_t> &) = delete;
+    observable_node& operator=(observable_node<node_t,edge_t> const &) = delete;
 
 public:
     auto add_node_observer(std::unique_ptr<node_observer_t> observer) -> void {
         super_t::add_observer(std::move(observer));
     }
 
-    auto notify_in_node_insert(node_t &target,node_t& node,const edge_t& edge) -> void override {
+    auto notify_in_node_inserted(node_t &target,node_t& node,const edge_t& edge) -> void  {
         for(auto &observer:super_t::observers())
             if(observer)
-                observer->notify_in_node_insert(target,node,edge);
+                observer->notify_in_node_inserted(target,node,edge);
     }
 
-    auto notify_in_node_remove(node_t &target,node_t& node,const edge_t& edge) -> void override {
+    auto notify_in_node_remove(node_t &target,node_t& node,const edge_t& edge) -> void  {
         for(auto &observer:super_t::observers())
             if(observer)
                 observer->notify_in_node_remove(target,node,edge);
     }
 
-    auto notify_in_node_remove(node_t &target) -> void override {
+    auto notify_in_node_remove(node_t &target) -> void  {
         for(auto &observer:super_t::observers())
             if(observer)
                 observer->notify_in_node_remove(target);
     }
 
-    auto notify_out_node_insert(node_t &target,node_t& node,const edge_t& edge) -> void override {
+    auto notify_out_node_insert(node_t &target,node_t& node,const edge_t& edge) -> void  {
         for(auto &observer:super_t::observers())
             if(observer)
                 observer->notify_out_node_insert(target,node,edge);
     }
 
-    auto notify_out_node_remove(node_t &target,node_t& node,const edge_t& edge) -> void override {
+    auto notify_out_node_remove(node_t &target,node_t& node,const edge_t& edge) -> void  {
         for(auto &observer:super_t::observers())
             if(observer)
                 observer->notify_out_node_remove(target,node,edge);
     }
 
-    auto notify_out_node_remove(node_t& target) noexcept -> void override {
+    auto notify_out_node_remove(node_t& target) noexcept -> void  {
         for(auto &observer:super_t::observers())
             if(observer)
                 observer->notify_out_node_remove(target);
@@ -144,33 +145,33 @@ public:
         super_t::add_observer(std::move(observer));
     }
 
-    auto notify_graph_insert(node_t &node) -> void override {
+    auto notify_graph_insert(node_t &node) -> void  {
         for(auto &observer:super_t::observers())
             if(observer)
                 observer->notify_graph_insert(node);
     }
 
-    auto notify_graph_remove(node_t &node) -> void override {
+    auto notify_graph_remove(node_t &node) -> void  {
         for(auto &observer:super_t::observers())
             if(observer)
                 observer->notify_graph_remove(node);
     }
-    auto notify_edge_insert(edge_t &edge) -> void override {
+    auto notify_edge_insert(edge_t &edge) -> void  {
         for(auto &observer:super_t::observers())
             if(observer)
                 observer->notify_edge_insert(edge);
     }
-    auto notify_edge_remove(edge_t &edge) -> void override {
+    auto notify_edge_remove(edge_t &edge) -> void  {
         for(auto &observer:super_t::observers())
             if(observer)
                 observer->notify_edge_remove(edge);
     }
-    auto notify_group_insert(group_t &group) -> void override {
+    auto notify_group_insert(group_t &group) -> void  {
         for(auto &observer:super_t::observers())
             if(observer)
                 observer->notify_group_insert(group);
     }
-    auto notify_group_remove(group_t &group) -> void override {
+    auto notify_group_remove(group_t &group) -> void  {
         for(auto &observer:super_t::observers())
             if(observer)
                 observer->notify_group_remove(group);
