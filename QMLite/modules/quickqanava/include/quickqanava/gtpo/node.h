@@ -70,6 +70,19 @@ public:
         observable_base_t::add_node_observer(std::move(observer));
     }
 
+public:
+    using edge_t=QVector<edge_t*>;
+    auto add_out_edge(edge_t* outEdge)->bool;
+    auto add_in_edge(edge_t* inEdge)->bool;
+    auto remove_out_edge(edge_t* outEdge)->bool;
+    auto remove_in_edge(edge_t* inEdge)->bool;
+
+    inline auto get_out_edges()const noexcept->const edge_t&{return _out_edges;}
+    inline auto get_in_edges()const noexcept->const edge_t&{return _int_edges;}
+    inline auto get_out_nodes()const noexcept->const nodes_t&{return _out_nodes;}
+    inline auto get_in_nodes()const noexcept->const nodes_t&{return _in_nodes;}
+    inline auto get_out_degree()const noexcept->size_t{return _out_edges.size();}
+
 private:
     edge_t _int_edges;
     edge_t _out_edges;
