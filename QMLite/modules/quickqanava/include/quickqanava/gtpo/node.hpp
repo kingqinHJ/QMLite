@@ -54,7 +54,7 @@ auto node<node_base_t, graph_t, node_t, edge_t, group_t>::add_out_edge(edge_t* o
 }
 
 // ============================================================================
-// remove_out_edge — 添加入边
+//  add_in_edge添加入边
 // ============================================================================
 template <class node_base_t, class graph_t, class node_t, class edge_t, class group_t>
 auto node<node_base_t, graph_t, node_t, edge_t, group_t>::add_in_edge(edge_t* inEdge) -> bool
@@ -63,8 +63,8 @@ auto node<node_base_t, graph_t, node_t, edge_t, group_t>::add_in_edge(edge_t* in
         return false;
      // 1) 将边的目标节点设为自己
     auto in_edge_dst = inEdge->get_dst();
-    if (in_edge_dst != nullptr || !in_edge_dst!=this) {
-        inEdge.set_dst(reinterpret_cast<node_t*>(this));
+    if (in_edge_dst != nullptr || in_edge_dst!=this) {
+        inEdge->set_dst(reinterpret_cast<node_t*>(this));
     }
     // 2) 将边加入入边集合
     _in_edges.append(inEdge);
@@ -77,7 +77,7 @@ auto node<node_base_t, graph_t, node_t, edge_t, group_t>::add_in_edge(edge_t* in
         *reinterpret_cast<node_t*>(this),
         *src,
         *inEdge
-    );
+        );
     }
 
     return true;
@@ -87,7 +87,7 @@ auto node<node_base_t, graph_t, node_t, edge_t, group_t>::add_in_edge(edge_t* in
 //移除出边
 // ============================================================================
 template <class node_base_t, class graph_t, class node_t, class edge_t, class group_t>
-auto node<node_base_t, graph_t, node_t, edge_t, group_t>::remove_out_edge(edge_t* outEdge) -> bool
+auto node<node_base_t, graph_t, node_t, edge_t, group_t>::remove_out_edge(const edge_t* outEdge) -> bool
 {
     if (outEdge == nullptr)
         return false;
@@ -107,9 +107,9 @@ auto node<node_base_t, graph_t, node_t, edge_t, group_t>::remove_out_edge(edge_t
             *outEdge
         );
     }
-    _out_edges.removeOne(outEdge);
-    _out_nodes.removeOne(out_edge_dst);
-    if(get_in_degree() == 0)
+    _out_edges.removeAll(outEdge);
+    _out_nodes.removeAll(out_edge_dst);
+    if(get_out_degree() == 0)
     {
         graph_t* graph = this->get_graph();
         if(graph != nullptr)
@@ -124,20 +124,14 @@ auto node<node_base_t, graph_t, node_t, edge_t, group_t>::remove_out_edge(edge_t
 }
 
 template <class node_base_t, class graph_t, class node_t, class edge_t, class group_t>
-auto node<node_base_t, graph_t, node_t, edge_t, group_t>::remove_in_edge(edge_t* inEdge) -> bool
+auto node<node_base_t, graph_t, node_t, edge_t, group_t>::remove_in_edge(const edge_t* inEdge) -> bool
 {
     if (inEdge == nullptr){
         std::cerr << "gtpo::node<>::remove_in_edge(): Error: In edge is nullptr." << std::endl;
         return false;
     }
-    auto in_edge_src = inEdge->get_src();
-    if(in_edge_src==nullptr||in_edge_src!=this)
-    {
-        std::cerr << "gtpo::node<>::remove_in_edge(): Error: In edge source is nullptr or different from this node." << std::endl;
-        return false;
-    }
     auto in_edge_dst = inEdge->get_dst();
-    if(in_edge_dst!=nullptr||in_edge_dst!=this)
+    if(in_edge_dst==nullptr||in_edge_dst!=this)
     {
         std::cerr << "gtpo::node<>::remove_in_edge(): Error: In edge destination is nullptr or different from this node." << std::endl;
         return false;
@@ -152,9 +146,9 @@ auto node<node_base_t, graph_t, node_t, edge_t, group_t>::remove_in_edge(edge_t*
         *in_edge_src,
         *inEdge
     );
-    _in_edges.removeOne(inEdge);
-    _in_nodes.removeOne(in_edge_src);
-    if(get_out_degree() == 0)
+    _in_edges.removeAll(const_cast<edge_t*>(inEdge));
+    _in_nodes.removeAll(in_edge_src);
+    if(get_in_degree() == 0)
     {
         graph_t* graph = this->get_graph();
         if(graph != nullptr)
@@ -168,12 +162,12 @@ auto node<node_base_t, graph_t, node_t, edge_t, group_t>::remove_in_edge(edge_t*
     return true;
 }
 
-template <class node_base_t, class graph_t, class node_t, class edge_t, class group_t>
-auto node<node_base_t, graph_t, node_t, edge_t, group_t>::has_node(const node_t* node)const noexcept->bool
-{
-    if(node == nullptr)
-        return false;
-    auto nodeIter=std::find_if(_nodes.begin(),_nodes.end(),[=](const node_t* n){return n==node;}) 
-    return nodeIter != _nodes.end();
-}
+// template <class node_base_t, class graph_t, class node_t, class edge_t, class group_t>
+// auto node<node_base_t, graph_t, node_t, edge_t, group_t>::has_node(const node_t* node)const noexcept->bool
+// {
+//     if(node == nullptr)
+//         return false;
+//     auto nodeIter=std::find_if(_nodes.begin(),_nodes.end(),[=](const node_t* n){return n==node;})
+//     return nodeIter != _nodes.end();
+// }
 } // ::gtpo
