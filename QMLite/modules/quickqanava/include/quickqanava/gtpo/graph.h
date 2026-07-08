@@ -2,9 +2,16 @@
 
 #include <vector>
 #include <unordered_set>
+#include <cassert>
+#include <iterator>
+
 #include <memory>
 #include <algorithm>
 #include <iostream>
+
+#include"observable.h"
+#include"container_adapter.h"
+#include"observer.h"
 
 #include <quickqanava/gtpo/container_adapter.h>
 
@@ -30,9 +37,64 @@ namespace gtpo {
  * - 所有容器操作通过 container_adapter 调用
  */
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-class graph : public graph_base_t
+class graph : public graph_base_t, public observable_base_t<class graph_t, class node_t, class edge_t, class group_t>
 {
-    // TODO: 实现
+public：
+    using graph_t=graph<graph_base_t, node_t, group_t, edge_t>;
+    using nodes_t=QVector<node_t*>;
+    using nodes_rearch_t=QSet<node_t*>;
+    using groups_t=QVector<group_t*>;
+    using edges_t=QVector<edge_t*>;
+    using edges_rearch_t=QSet<edge_t*>;
+    using observable_base_t=observable<graph_t>;
+
+    using size_type=std::size_t;
+
+    graph() noexcept:graph_base_t{}, observable_base_t{}{}
+
+    template<class B>
+    graph(B *parent) noexcept:graph_base_t{parent}, observable_base_t{}{}
+
+    virtual ~graph();
+
+    graph(graph const &other)=delete;
+    graph operator=(graph const &other)=delete;
+
+    void clear() noexcept;
+
+    auto is_Empty() const noexcept -> bool;
+
+public:
+    auto create_node() -> node_t*;
+
+    auto insert_node(node_t *node) -> bool;
+
+    auto remove_node(node_t *node) -> bool;
+
+    inline auto get_Nodes_count() const noexcept -> size_type{return _nodes.size();};
+
+    inline auto get_root_Nodes_count() const noexcept -> size_type{return _root_nodes.size();};
+
+    auto install_root_node(node_t *node) -> void;
+
+    auto is_root_node(node_t *node) const -> bool;
+
+    auto contains(node_t *node) const -> bool;
+
+    inline auto get_Nodes() const noexcept -> nodes_t{return _nodes;};
+    inline auto begin() noexcept -> nodes_t::const_iterator{return _nodes.begin();};
+    inline auto end() noexcept -> nodes_t::const_iterator{return _nodes.end();};
+    
+
+private:
+    nodes_rearch_t _nodes_rearch;
+    nodes_t _nodes;
+    nodes_t _root_nodes;
+
+    edges_t _edges;
+    edges_rearch_t _edges_rearch;
+
+    groups_t _groups;
 };
 
 } // ::gtpo
