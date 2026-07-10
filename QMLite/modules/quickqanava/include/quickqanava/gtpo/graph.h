@@ -84,7 +84,13 @@ public:
     inline auto get_Nodes() const noexcept -> nodes_t{return _nodes;};
     inline auto begin() noexcept -> nodes_t::const_iterator{return _nodes.begin();};
     inline auto end() noexcept -> nodes_t::const_iterator{return _nodes.end();};
-    
+    inline auto cbegin() noexcept -> nodes_t::const_iterator{return _nodes.begin();};
+    inline auto cend() noexcept -> nodes_t::const_iterator{return _nodes.end();};
+
+    inline auto get_root_Nodes() const noexcept -> nodes_t&{return _root_nodes;};
+
+public:
+    auto insert_edge(node_t *source,node_t *destination) -> edge_t*;
 
 private:
     nodes_rearch_t _nodes_rearch;
