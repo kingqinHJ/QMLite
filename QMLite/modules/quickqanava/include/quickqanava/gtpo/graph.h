@@ -82,15 +82,26 @@ public:
     auto contains(node_t *node) const -> bool;
 
     inline auto get_Nodes() const noexcept -> nodes_t{return _nodes;};
-    inline auto begin() noexcept -> nodes_t::const_iterator{return _nodes.begin();};
-    inline auto end() noexcept -> nodes_t::const_iterator{return _nodes.end();};
-    inline auto cbegin() noexcept -> nodes_t::const_iterator{return _nodes.begin();};
-    inline auto cend() noexcept -> nodes_t::const_iterator{return _nodes.end();};
-
-    inline auto get_root_Nodes() const noexcept -> nodes_t&{return _root_nodes;};
+    inline auto begin() const noexcept -> nodes_t::const_iterator{return _nodes.begin();};
+    inline auto end() const noexcept -> nodes_t::const_iterator{return _nodes.end();};
+    
+    inline auto cbegin() const noexcept -> nodes_t::const_iterator{return _nodes.cbegin();};
+    inline auto cend() const noexcept -> nodes_t::const_iterator{return _nodes.cend();};
+    inline auto get_root_nodes() const noexcept -> nodes_t&{return _root_nodes;};
 
 public:
-    auto insert_edge(node_t *source,node_t *destination) -> edge_t*;
+    auto insert_edge(nodes_t *source, nodes_t *dest) -> edge_t*;
+    auto insert_edge(nodes_t *edge) -> bool*;
+    auto remove_edge(nodes_t *source, nodes_t *dest) -> bool;
+    auto remove_add_edge(nodes_t *source, nodes_t *dest)->bool;
+    auto remove_edge(edge_t *edge) -> bool;
+    auto find_edge(nodes_t *source, nodes_t *dest) const -> edge_t*;
+    auto has_edge(nodes_t *source, nodes_t *dest) const -> bool;
+    auto find_edge(nodes_t *source, nodes_t *dest) const -> edge_t*;
+    auto has_edge_count() const -> unsigned int{return static_cast<unsigned int>(_edges.size());}
+    auto has_edge_count(nodes_t *source, nodes_t *dest) const ->unsigned int;
+    auto constant(edge_t* edge) const -> bool;
+    inline auto get_edges() const noexcept -> edges_t&{return _edges;};
 
 private:
     nodes_rearch_t _nodes_rearch;
