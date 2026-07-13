@@ -112,6 +112,15 @@ private:
     edges_rearch_t _edges_rearch;
 
     groups_t _groups;
+
+public:
+    auto insert_group(group_t *group_t) -> bool;
+    auto remove_group(group_t *group_t) -> bool;
+    auto has_group(const group_t *group_t) const -> bool;
+    auto get_group_count(const group_t *group_t)const int {return static_cast<int>(_groups.size());}
+    auto get_group()const -> const group_t&{ return _groups;}
+    auto group_node(node_t *node,group_t *group_t) -> bool;
+    auto ungroup_node(node_t *node,group_t *group_t) -> bool;
 };
 
 } // ::gtpo
