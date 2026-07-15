@@ -23,7 +23,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::~graph()
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::clear() noexcept -> void
+auto graph<graph_base_t, node_t, group_t, edge_t>::clear() noexcept -> void
 {
     // ═══════════════════════════════════════════
     // 第一步：先把节点指针拷到临时容器，再清空原容器
@@ -65,7 +65,13 @@ graph<graph_base_t, node_t, group_t, edge_t>::clear() noexcept -> void
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::create_node() -> node_t*
+auto graph<graph_base_t, node_t, group_t, edge_t>::is_empty() const noexcept -> bool
+{
+    return get_node_count() == 0 && get_group_count() == 0;
+}
+
+template <class graph_base_t, class node_t, class group_t, class edge_t>
+auto graph<graph_base_t, node_t, group_t, edge_t>::create_node() -> node_t*
 {
     std::unique_ptr<node_t> node ;
     try
@@ -85,7 +91,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::create_node() -> node_t*
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::insert_node(node_t *node) -> bool
+auto graph<graph_base_t, node_t, group_t, edge_t>::insert_node(node_t *node) -> bool
 {
     if(!node) return false;
     if(_nodes_search.contains(node))
@@ -110,7 +116,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::insert_node(node_t *node) -> bool
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::remove_node(node_t *node) -> bool
+auto graph<graph_base_t, node_t, group_t, edge_t>::remove_node(node_t *node) -> bool
 {
     if(!node) return false;
     //如果 node 在某组里 → 先从组里移出来
@@ -120,7 +126,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::remove_node(node_t *node) -> bool
     }
 
     //通知图观察者：这个节点即将被移除
-    observable_graph::notify_node_removed(*node);
+    this->notify_node_removed(*node);
 
     // ├─ 处理入边：
     // │    ├─ 把入边指针全部拷到临时容器
@@ -160,7 +166,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::remove_node(node_t *node) -> bool
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::install_root_node(node_t *node) -> void
+auto graph<graph_base_t, node_t, group_t, edge_t>::install_root_node(node_t *node) -> void
 {
     if (node==nullptr)
     {
@@ -176,13 +182,13 @@ graph<graph_base_t, node_t, group_t, edge_t>::install_root_node(node_t *node) ->
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::is_root_node(const node_t *node) const -> bool
+auto graph<graph_base_t, node_t, group_t, edge_t>::is_root_node(const node_t *node) const -> bool
 {
     if (node==nullptr)
     {
         return false;
     }
-    if (node->get_degree()!=0)
+    if (node->get_in_degree()!=0)
     {
         return false;
     }
@@ -191,7 +197,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::is_root_node(const node_t *node) c
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-class graph<graph_base_t, node_t, group_t, edge_t>::contains(const node_t *node) const -> bool
+auto graph<graph_base_t, node_t, group_t, edge_t>::contains(const node_t *node) const -> bool
 {
     if (node==nullptr)
     {
@@ -220,7 +226,7 @@ class graph<graph_base_t, node_t, group_t, edge_t>::contains(const node_t *node)
 //     │
 //     └─ 通知图观察者：notify_edge_inserted(edge)
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::insert_edge(node_t* source, node_t* destination) -> edge_t*
+auto graph<graph_base_t, node_t, group_t, edge_t>::insert_edge(node_t* source, node_t* destination) -> edge_t*
 {
     if (source==nullptr || destination==nullptr)
     {
@@ -262,7 +268,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::insert_edge(node_t* source, node_t
 
 // 一句话：insert_edge(src,dst) 是"帮我建一条边"，insert_edge(edge) 是"这条边已经建好了，帮我登记进图"。
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::insert_edge(edge_t *edge) -> bool
+auto graph<graph_base_t, node_t, group_t, edge_t>::insert_edge(edge_t *edge) -> bool
 {
     if (edge==nullptr)
     {
@@ -298,7 +304,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::insert_edge(edge_t *edge) -> bool
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::remove_edge(node_t* source, node_t* destination) -> bool
+auto graph<graph_base_t, node_t, group_t, edge_t>::remove_edge(node_t* source, node_t* destination) -> bool
 {
     if(source==nullptr || destination==nullptr)
         return false;
@@ -313,7 +319,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::remove_edge(node_t* source, node_t
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::remove_all_edges(node_t* source, node_t* destination) -> bool
+auto graph<graph_base_t, node_t, group_t, edge_t>::remove_all_edges(node_t* source, node_t* destination) -> bool
 {
     if(source==nullptr || destination==nullptr)
         return false;
@@ -327,7 +333,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::remove_all_edges(node_t* source, n
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::remove_edge(edge_t *edge) -> bool
+auto graph<graph_base_t, node_t, group_t, edge_t>::remove_edge(edge_t *edge) -> bool
 {
     if(edge==nullptr)
         return false;
@@ -348,7 +354,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::remove_edge(edge_t *edge) -> bool
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::find_edge(const node_t *source, const node_t *destination) const-> edge_t*
+auto graph<graph_base_t, node_t, group_t, edge_t>::find_edge(const node_t *source, const node_t *destination) const -> edge_t*
 {
     if(source==nullptr || destination==nullptr)
         return nullptr;
@@ -360,13 +366,13 @@ graph<graph_base_t, node_t, group_t, edge_t>::find_edge(const node_t *source, co
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::has_edge(const node_t* source, const node_t* destination) const -> bool
+auto graph<graph_base_t, node_t, group_t, edge_t>::has_edge(const node_t* source, const node_t* destination) const -> bool
 {
     return  find_edge(source, destination)!=nullptr;
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::get_edge_count(const node_t* source, const node_t* destination) const -> int
+auto graph<graph_base_t, node_t, group_t, edge_t>::get_edge_count(const node_t* source, const node_t* destination) const -> unsigned int
 {
     unsigned int count=0;
     std::for_each(_edges.begin(), _edges.end(), [&](const edge_t* e)
@@ -378,7 +384,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::get_edge_count(const node_t* sourc
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::contains(const edge_t* edge) const -> bool
+auto graph<graph_base_t, node_t, group_t, edge_t>::contains(const edge_t* edge) const -> bool
 {
     if(edge==nullptr)
         return false;
@@ -386,7 +392,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::contains(const edge_t* edge) const
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::insert_group(group_t *group) -> bool
+auto graph<graph_base_t, node_t, group_t, edge_t>::insert_group(group_t *group) -> bool
 {
     if (group==nullptr)
     {
@@ -404,7 +410,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::insert_group(group_t *group) -> bo
 
 //group不知道在哪定义的
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::remove_group(group_t *group) -> bool
+auto graph<graph_base_t, node_t, group_t, edge_t>::remove_group(group_t *group) -> bool
 {
     if (group==nullptr)
     {
@@ -421,7 +427,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::remove_group(group_t *group) -> bo
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::has_group(const group_t *group) const -> bool
+auto graph<graph_base_t, node_t, group_t, edge_t>::has_group(const group_t *group) const -> bool
 {
     if(group==nullptr)
         return false;
@@ -429,7 +435,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::has_group(const group_t *group) co
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::group_node(node_t *node, group_t *group) -> bool
+auto graph<graph_base_t, node_t, group_t, edge_t>::group_node(node_t *node, group_t *group) -> bool
 {
     if(node==nullptr || group==nullptr)
         return false;
@@ -441,7 +447,7 @@ graph<graph_base_t, node_t, group_t, edge_t>::group_node(node_t *node, group_t *
 }
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
-graph<graph_base_t, node_t, group_t, edge_t>::ungroup_node(node_t *node, group_t *group) -> bool
+auto graph<graph_base_t, node_t, group_t, edge_t>::ungroup_node(node_t *node, group_t *group) -> bool
 {
     if(node==nullptr || group==nullptr)
         return false;

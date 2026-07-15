@@ -167,7 +167,7 @@ auto node<node_base_t, graph_t, node_t, edge_t, group_t>::remove_out_edge(const 
     {
         observable_base_t::notify_out_node_removed(
             *reinterpret_cast<node_t*>(this),
-            *out_edge_dst,
+            *const_cast<node_t*>(out_edge_dst),
             *outEdge
         );
     }
@@ -243,13 +243,13 @@ auto node<node_base_t, graph_t, node_t, edge_t, group_t>::remove_in_edge(const e
     // ── 步骤 2：移除前通知 ──
     observable_base_t::notify_in_node_removed(
         *reinterpret_cast<node_t*>(this),
-        *in_edge_src,
+        *const_cast<node_t*>(in_edge_src),
         *inEdge
     );
 
     // ── 步骤 3 & 4：清理 ──
     _in_edges.removeAll(const_cast<edge_t*>(inEdge));
-    _in_nodes.removeAll(in_edge_src);
+    _in_nodes.removeAll(const_cast<node_t*>(in_edge_src));
 
     // ── 步骤 5：入度归零 → 注册为根节点 ──
     // 根节点定义：入度为 0。这里的检查是正确的。

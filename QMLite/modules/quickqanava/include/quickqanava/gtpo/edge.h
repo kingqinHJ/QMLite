@@ -45,8 +45,10 @@ public:
 
     //! 默认构造（仅传 parent，src/dst 后续设置）
     explicit edge(edge_base_t* parent = nullptr) noexcept
-        : edge_base_t{parent}
-    {}
+        : edge_base_t{}
+    {
+        static_cast<void>(parent);  // parent 仅用于 QObject 等基类，EmptyBase 忽略
+    }
 
     //! 带 src/dst 的构造
     //  explicit：禁止 {src, dst} 隐式转换成 edge（创建边是有语义后果的操作）

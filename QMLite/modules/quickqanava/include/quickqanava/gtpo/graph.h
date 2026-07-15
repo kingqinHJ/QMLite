@@ -47,7 +47,8 @@ namespace gtpo {
 
 template <class graph_base_t, class node_t, class group_t, class edge_t>
 class graph : public graph_base_t,
-              public gtpo::observable_graph<graph_t, node_t, edge_t, group_t>
+              public gtpo::observable_graph<graph<graph_base_t, node_t, group_t, edge_t>,
+                                            node_t, edge_t, group_t>
 {
 public:
     // ── 类型别名 ──

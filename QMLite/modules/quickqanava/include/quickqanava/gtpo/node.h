@@ -61,8 +61,10 @@ public:
 
     // ── 构造/析构 ──
     explicit node(node_base_t* parent = nullptr) noexcept
-        : node_base_t{parent}
-    {}
+        : node_base_t{}
+    {
+        static_cast<void>(parent);  // parent 仅用于 QObject 等基类，EmptyBase 忽略
+    }
 
     //! 虚析构：清理拓扑关联，如果还绑在图上则发出警告
     virtual ~node() noexcept
