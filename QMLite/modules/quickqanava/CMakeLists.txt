@@ -28,6 +28,11 @@ file(GLOB_RECURSE QUICKQANAVA_SOURCES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 )
 
+# ── 参考文件（仅 IDE 可见，不参与编译）──
+file(GLOB_RECURSE QUICKQANAVA_REFERENCE_FILES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/reference/*"
+)
+
 # ───────────────────────────────────────────────────────────────
 # 创建库目标（三种模式可选）
 # ───────────────────────────────────────────────────────────────
@@ -95,3 +100,7 @@ target_link_libraries(quickqanava
 
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}/include/quickqanava" PREFIX "Headers" FILES ${QUICKQANAVA_GTPO_HEADERS} ${QUICKQANAVA_QAN_HEADERS})
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}/src" PREFIX "Sources" FILES ${QUICKQANAVA_SOURCES})
+
+# ── 参考文件：仅 IDE 可见，不参与编译 ──
+# Phase 2 实现 qan 层时对照参考，文件列表见 reference/README.md
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}/reference" PREFIX "Reference" FILES ${QUICKQANAVA_REFERENCE_FILES})
