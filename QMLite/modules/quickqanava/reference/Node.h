@@ -35,8 +35,7 @@ class Edge;
 class Group;
 class NodeItem;
 
-class Node : public QObject,
-             public gtpo::node<QObject, Graph, Node, Edge, Group>
+class Node : public gtpo::node<QObject, Graph, Node, Edge, Group>
 {
     Q_OBJECT
     QML_ELEMENT

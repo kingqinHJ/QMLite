@@ -9,9 +9,8 @@ namespace qan {
 // ============================================================================
 
 Node::Node(QObject* parent)
-    : QObject{parent}
+    : super_t{parent}
 {
-    // gtpo::node 默认构造已由模板基类处理
 }
 
 // ── 图访问 ──

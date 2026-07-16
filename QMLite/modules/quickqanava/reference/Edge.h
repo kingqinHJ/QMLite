@@ -20,8 +20,7 @@ class Graph;
 class Node;
 class EdgeItem;
 
-class Edge : public QObject,
-             public gtpo::edge<QObject, Graph, Node>
+class Edge : public gtpo::edge<QObject, Graph, Node>
 {
     Q_OBJECT
     QML_ELEMENT

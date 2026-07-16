@@ -10,7 +10,7 @@ namespace qan {
 // ============================================================================
 
 Edge::Edge(QObject* parent)
-    : QObject{parent}
+    : super_t{parent}
 {
 }
 
