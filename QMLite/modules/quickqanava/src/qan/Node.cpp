@@ -35,4 +35,89 @@
 
 namespace qan { // ::qan
 
+Node::Node( QObject* parent /*= nullptr*/ ) 
+    : super_t{parent}
+{
+}
+
+Graph* Node::getGraph() noexcept
+{
+    return get_graph();
+}
+
+const Graph* Node::getGraph() const noexcept
+{
+    return get_graph();
+}
+
+NodeItem* Node::getItem() noexcept
+{
+    return _item;
+}
+
+const NodeItem* Node::getItem() const noexcept
+{
+    return _item;
+}
+
+void Node::setItem( NodeItem* item ) noexcept
+{
+    _item = item;
+    if(item)
+          item->setNode( this );
+}
+
+bool Node::setLabel( const QString& label )
+{
+    if ( _label != label ) {
+        _label = label;
+        emit labelChanged( _label );
+        return true;
+    }
+    return false;
+}
+
+bool Node::setLocked( bool locked )
+{
+    if ( _locked != locked ) {
+        _locked = locked;
+        emit lockedChanged( _locked );
+        return true;
+    }
+    return false;
+}
+
+bool Node::setIsProtected( bool protected )
+{
+    if ( _protected != protected ) {
+        _protected = protected;
+        emit protectedChanged( _protected );
+        return true;
+    }
+    return false;
+}
+
+int Node::getInDegree() const
+{
+    return static_cast<int>(get_in_degree());
+}
+
+int Node::getOutDegree() const
+{
+    return static_cast<int>(get_out_degree());
+}
+
+QQmlComponent* Node::delegate(QQmlEngine* engine, QObject* parent)noexcept
+{
+    Q_UNUSED(engine)
+    Q_UNUSED(parent)
+    return nullptr;
+}
+
+NodeStyle* Node::style(QObject* parent) noexcept
+{
+    Q_UNUSED(parent)
+    return nullptr;
+}
+
 } // ::qan
