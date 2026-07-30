@@ -117,6 +117,28 @@ private:
 
     //端点坐标
     Q_PROPERTY(QPointF p1 READ getP1 WRITE setP1 NOTIFY p1Changed FINAL)
+    QPointF getP1() const {return _p1;}
+    void setP1( const QPointF& p ) {_p1 = p;update();}
+signals:
+    void p1Changed();
+private:
+    QPointF _p1;
+
+    Q_PROPERTY(QPointF p2 READ getP2 WRITE setP2 NOTIFY p2Changed FINAL)
+    QPointF getP2() const {return _p2;}
+    void setP2( const QPointF& p ) {_p2 = p;update();}
+signals:
+    void p2Changed();
+private:
+    QPointF _p2;
+
+    //更新几何
+public slots:
+    void updateItem();  
+
+protected:
+    QSGNode* updatePaintNode( QSGNode* node, UpdatePaintNodeData* data ) override;
+    void geometryChanged( const QRectF& newGeometry, const QRectF& oldGeometry ) override;
 };
 
 } // ::qan
