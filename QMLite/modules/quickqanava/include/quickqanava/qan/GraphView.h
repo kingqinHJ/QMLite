@@ -1,24 +1,45 @@
 #pragma once
 
+// ============================================================================
+// GraphView.h — 图视图容器（Phase 3 缩放/平移）
+// ============================================================================
+//
+// 职责：包裹 Graph，提供缩放（滚轮）和平移（鼠标中键/手势）。
+// Phase 2 可跳过，直接在 QML 中放 Graph 组件即可。
+// ============================================================================
+
 #include <QQuickItem>
+#include <QPointer>
 
 namespace qan {
 
 class Graph;
 
-// Phase 3：视图容器，支持缩放/平移
-//
-// TODO:
-// - 继承 QQuickItem（或 Flickable）
-// - QML_ELEMENT
-// - 属性：graph（指向 qan::Graph）
-// - 鼠标事件：滚轮缩放、拖拽平移
-// - 内部维护一个变换矩阵（scale + translate）
-
 class GraphView : public QQuickItem
 {
     Q_OBJECT
-    // TODO: Phase 3 开始实现
+    QML_ELEMENT
+
+public:
+    explicit GraphView( QQuickItem* parent = nullptr )
+            : QQuickItem( parent ){}
+
+    //图绑定
+    Q_PROPERTY( Graph* graph READ getGraph WRITE setGraph NOTIFY graphChanged )
+    Graph* getGraph() noexcept{ return _graph; }
+    const Graph* getGraph() const noexcept{ return _graph; }
+    void setGraph(Graph* graph) {
+        if (_graph != graph) {
+            _graph = graph;
+            emit graphChanged();
+        }
+    }
+
+signals:
+    void graphChanged();
+
+protected:
+    QPointer<Graph> _graph;
 };
 
 } // ::qan
