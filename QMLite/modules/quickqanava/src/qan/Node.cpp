@@ -87,11 +87,11 @@ bool Node::setLocked( bool locked )
     return false;
 }
 
-bool Node::setIsProtected( bool protected )
+bool Node::setIsProtected( bool isProtected )
 {
-    if ( _protected != protected ) {
-        _protected = protected;
-        emit protectedChanged( _protected );
+    if ( _isProtected != isProtected ) {
+        _isProtected = isProtected;
+        emit protectedChanged( _isProtected );
         return true;
     }
     return false;
@@ -107,7 +107,7 @@ int Node::getOutDegree() const
     return static_cast<int>(get_out_degree());
 }
 
-QQmlComponent* Node::delegate(QQmlEngine* engine, QObject* parent)noexcept
+QQmlComponent* Node::delegate(QQmlEngine& engine, QObject* parent)noexcept
 {
     Q_UNUSED(engine)
     Q_UNUSED(parent)

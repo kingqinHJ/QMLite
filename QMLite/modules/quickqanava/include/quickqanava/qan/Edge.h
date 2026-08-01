@@ -12,7 +12,7 @@ namespace qan {
 class Graph;
 class Node;
 class Group;
-class Nodeitem;
+class NodeItem;
 
 // Phase 2+：qan::Edge 继承 gtpo::edge，把 edge_base_t 设为 QObject
 //
@@ -50,8 +50,8 @@ protected:
     QPointer<EdgeItem> _item;
 
     //源/目标节点
-    Q_INVOKABLE NODE* getSource() {return get_src();}
-    Q_INVOKABLE NODE* getDestination() {return get_dst();}
+    Q_INVOKABLE Node* getSource() {return get_src();}
+    Q_INVOKABLE Node* getDestination() {return get_dst();}
     
     //标签
     Q_PROPERTY(QString label READ getLabel WRITE setLabel NOTIFY labelChanged)

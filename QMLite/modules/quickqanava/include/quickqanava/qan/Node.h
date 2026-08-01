@@ -41,7 +41,7 @@ public:
 
     //可视化项
     Q_PROPERTY(NodeItem* item READ getItem CONSTANT FINAL)
-    NodeItem* getItem() const noexcept;
+    NodeItem* getItem() noexcept;
     const NodeItem* getItem() const noexcept;
     virtual void setItem(NodeItem* item)noexcept;
 protected:
@@ -51,7 +51,8 @@ protected:
     Q_PROPERTY(QString label READ getLabel WRITE setLabel NOTIFY labelChanged FINAL)
     QString getLabel() { return _label; }
     bool setLabel(const QString& label);
-    Q_SIGNALS labelChanged(QString label )
+Q_SIGNALS:
+    void labelChanged(QString label );
 private:
     QString _label = "";
     
@@ -59,13 +60,15 @@ private:
     Q_PROPERTY(bool locked READ getLocked WRITE setLocked NOTIFY lockedChanged FINAL)
     bool getLocked() { return _locked; }
     bool setLocked(bool locked);
-    Q_SIGNALS lockedChanged(bool locked )
+Q_SIGNALS:
+    void lockedChanged(bool locked );
 private:
     bool _locked = false;
     Q_PROPERTY(bool isProtected READ getIsProtected WRITE setIsProtected NOTIFY isProtectedChanged FINAL)
     bool getIsProtected() { return _isProtected; }
     bool setIsProtected(bool isProtected);
-    Q_SIGNALS isProtectedChanged(bool isProtected )
+Q_SIGNALS:
+    void protectedChanged(bool isProtected );
 private:
     bool _isProtected = false;
 
@@ -78,11 +81,13 @@ private:
 
     Q_PROPERTY(int inDegree READ getInDegree NOTIFY inDegreeChanged FINAL)
     int getInDegree() const ;
-    Q_SIGNALS inDegreeChanged(int inDegree )
+Q_SIGNALS:
+    void inDegreeChanged(int inDegree );
 
     Q_PROPERTY(int outDegree READ getOutDegree NOTIFY outDegreeChanged FINAL)
     int getOutDegree() const ;
-    Q_SIGNALS outDegreeChanged(int outDegree )
+Q_SIGNALS:
+    void outDegreeChanged(int outDegree );
 
 public:
     //静态工厂
