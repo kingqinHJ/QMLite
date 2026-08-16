@@ -106,4 +106,4 @@ protected:
 
 } // ::qan
 
-QML_DECLARE_TYPE(qan::Graph)
+QML_DECLARE_TYPE(qan::Graph)//不知道这个用来干嘛
