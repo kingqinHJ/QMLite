@@ -72,6 +72,21 @@ signals:
 private:
     qreal _borderWidth{ 1.0 };
 
+    Q_PROPERTY(QColor labelColor READ getLabelColor WRITE setLabelColor NOTIFY labelColorChanged FINAL)
+    QColor getLabelColor() const noexcept {return _labelColor;}
+    void setLabelColor(const QColor& color) noexcept {_labelColor = color;update();}
+signals:
+    void labelColorChanged();
+private:
+    QColor _labelColor{ "black"};
+
+    Q_PROPERTY(qreal fontSize READ getFontSize WRITE setFontSize NOTIFY fontSizeChanged FINAL)
+    qreal getFontSize() const noexcept {return _fontBold;}
+    void setFontBold(bool bold) noexcept {_fontBold = bold;update();}
+signals:
+    void fontSizeChanged();
+private:
+    int _fontSize{ 12 };
     Q_PROPERTY(bool fontBold READ getFontBold WRITE setFontBold NOTIFY fontBoldChanged FINAL)
     bool getFontBold() const noexcept {return _fontBold;}
     void setFontBold(bool bold) noexcept {_fontBold = bold;update();}
@@ -116,4 +131,5 @@ private:
     bool  _dragging{ false };    
 } // ::qan
 
+};
 QML_DECLARE_TYPE(qan::NodeItem)

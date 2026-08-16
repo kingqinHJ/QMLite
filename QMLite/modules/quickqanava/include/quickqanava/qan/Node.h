@@ -49,26 +49,26 @@ protected:
 
     //标签
     Q_PROPERTY(QString label READ getLabel WRITE setLabel NOTIFY labelChanged FINAL)
-    QString getLabel() { return _label; }
+    QString getLabel() const { return _label; }
     bool setLabel(const QString& label);
 Q_SIGNALS:
-    void labelChanged(QString label );
+    void labelChanged();
 private:
     QString _label = "";
     
     //锁定/保护
     Q_PROPERTY(bool locked READ getLocked WRITE setLocked NOTIFY lockedChanged FINAL)
-    bool getLocked() { return _locked; }
-    bool setLocked(bool locked);
+    bool getLocked() const{ return _locked; }
+    virtual bool setLocked(bool locked);
 Q_SIGNALS:
-    void lockedChanged(bool locked );
+    void lockedChanged();
 private:
     bool _locked = false;
     Q_PROPERTY(bool isProtected READ getIsProtected WRITE setIsProtected NOTIFY isProtectedChanged FINAL)
     bool getIsProtected() { return _isProtected; }
     bool setIsProtected(bool isProtected);
 Q_SIGNALS:
-    void protectedChanged(bool isProtected );
+    void protectedChanged();
 private:
     bool _isProtected = false;
 

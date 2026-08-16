@@ -37,12 +37,12 @@ public:
 
     //图访问
     Q_PROPERTY(Graph* graph READ getGraph CONSTANT FINAL)
-    Graph* getGraph() const noexcept;
+    Graph* getGraph() noexcept;
     const Graph* getGraph() const noexcept;
 
     //可视化项
     Q_PROPERTY(EdgeItem* item READ getItem CONSTANT)
-    EdgeItem* getItem() const noexcept;
+    EdgeItem* getItem()  noexcept;
     const EdgeItem* getItem() const noexcept;
     virtual void setItem(EdgeItem* item) noexcept;
 
@@ -54,7 +54,7 @@ protected:
     Q_INVOKABLE Node* getDestination() {return get_dst();}
     
     //标签
-    Q_PROPERTY(QString label READ getLabel WRITE setLabel NOTIFY labelChanged)
+    Q_PROPERTY(QString label READ getLabel WRITE setLabel NOTIFY labelChanged FINAL)
     bool setLabel(const QString& label);
     const QString& getLabel() const{return _label;}
 signals:
@@ -63,7 +63,7 @@ private:
     QString _label="";
 
     //权重
-    Q_PROPERTY(qreal weight READ getWeight WRITE setWeight NOTIFY weightChanged)
+    Q_PROPERTY(qreal weight READ getWeight WRITE setWeight NOTIFY weightChanged FINAL) 
     qreal getWeight() const{return _weight;}
     bool setWeight(qreal weight);
 signals:
@@ -71,7 +71,7 @@ signals:
 private:
     qreal _weight=1.0;
 
-    Q_PROPERTY(bool locked READ isLocked WRITE setLocked NOTIFY lockedChanged)
+    Q_PROPERTY(bool locked READ isLocked WRITE setLocked NOTIFY lockedChanged FINAL)
     bool isLocked() const{return _locked;}
     void setLocked(bool locked);
 signals:

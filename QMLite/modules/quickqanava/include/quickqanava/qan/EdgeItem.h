@@ -48,7 +48,7 @@ class EdgeItem : public QQuickItem
     Q_OBJECT
     QML_ELEMENT
 public:
-    explicit EdgeItem( QObject* parent /*= nullptr*/ );
+    explicit EdgeItem( QQuickItem* parent = nullptr);
     virtual ~EdgeItem() override= default;
     EdgeItem( const EdgeItem& ) = delete;
 
@@ -77,7 +77,7 @@ private:
     QPointer<NodeItem> _destinationItem;
 
     //线类型
-    enum LineType {
+    enum class LineType {
         Straight=1,
         Curved=2
     };
@@ -90,7 +90,7 @@ private:
     LineType _lineType = LineType::Straight;
 
     //线属性
-    Q_PROPERTY(qreal lineColor READ getLineColor WRITE setLineColor NOTIFY lineColorChanged FINAL)
+    Q_PROPERTY(QColor lineColor READ getLineColor WRITE setLineColor NOTIFY lineColorChanged FINAL)
     QColor getLineColor() const {return _lineColor;}
     void setLineColor( const QColor& color ) {_lineColor = color;update();}
 signals:
@@ -106,6 +106,13 @@ signals:
 private:
     qreal _lineWidth = 3.0;
 
+    Q_PROPERTY(bool dashed READ getDashed WRITE setDashed NOTIFY dashedChanged FINAL)
+    bool getDashed() const {return _dashed;}
+    void setDashed( bool dashed ) {_dashed = dashed;update();}
+signals:
+    void dashedChanged();
+private:
+    bool _dashed = false;
     //箭头大小
     Q_PROPERTY(qreal arrowSize READ getArrowSize WRITE setArrowSize NOTIFY arrowSizeChanged FINAL)
     qreal getArrowSize() const {return _arrowSize;}

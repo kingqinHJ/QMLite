@@ -8,7 +8,7 @@
 
 #include<QObject>
 #include<QQuickItem>
-#include<QQuickEngine>
+#include<QQmlComponent>
 #include <quickqanava/qan/Node.h>
 
 namespace qan {
@@ -19,7 +19,7 @@ class Group : public Node
     QML_ELEMENT
 
 public:
-    explicit Group( QQuickItem* parent = nullptr );
+    explicit Group( QObject* parent = nullptr );
     virtual ~Group() override=default;
     Group( const Group& other ) = delete;
 

@@ -95,7 +95,7 @@ public:
 signals:
     void selectionDelegateChanged();
 private:
-    QPointer<QQmlComponent> _selectionDelegate;
+    std::unique_ptr<QQmlComponent> _selectionDelegate;
 
 protected:
     std::unique_ptr<QQmlComponent> createComponent(const QString& url);
@@ -105,3 +105,5 @@ protected:
 };
 
 } // ::qan
+
+QML_DECLARE_TYPE(qan::Graph)
