@@ -31,10 +31,10 @@
 // Qt headers
 
 // QuickQanava headers
-#include "Edge.h"
-#include "Graph.h"
-#include "Node.h"
-#include "EdgeItem.h"
+#include <quickqanava/qan/Edge.h>
+#include <quickqanava/qan/Graph.h>
+#include <quickqanava/qan/Node.h>
+#include <quickqanava/qan/EdgeItem.h>
 
 namespace qan { // ::qan
 
@@ -53,7 +53,12 @@ const Graph* Edge::getGraph() const noexcept
     return get_graph();
 }
 
-const EdgeItem* Edge::getItem() noexcept
+EdgeItem* Edge::getItem() noexcept
+{
+    return _item;
+}
+
+const EdgeItem* Edge::getItem() const noexcept
 {
     return _item;
 }
@@ -69,7 +74,7 @@ bool Edge::setLabel( const QString& label )
 {
     if ( _label != label ) {
         _label = label;
-        emit labelChanged( _label );
+        emit labelChanged();
         return true;
     }
     return false;

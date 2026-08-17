@@ -13,6 +13,7 @@ class Graph;
 class Node;
 class Group;
 class NodeItem;
+class EdgeItem;
 
 // Phase 2+：qan::Edge 继承 gtpo::edge，把 edge_base_t 设为 QObject
 //
@@ -73,7 +74,7 @@ private:
 
     Q_PROPERTY(bool locked READ isLocked WRITE setLocked NOTIFY lockedChanged FINAL)
     bool isLocked() const{return _locked;}
-    void setLocked(bool locked);
+    bool setLocked(bool locked);
 signals:
     void lockedChanged();
 private:

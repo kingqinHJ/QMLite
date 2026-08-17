@@ -1,11 +1,19 @@
 #pragma once
 
+// ============================================================================
+// Node.h — qan::Node（拓扑节点 + QObject 属性）
+// ============================================================================
+//
+// 继承 gtpo::node，node_base_t 注入 QObject。
+// 注意：Q_PROPERTY 与 Q_SIGNALS 不能交替出现（MOC 解析问题），
+//      所有属性声明集中在上方，所有信号集中在下方同一个 signals 段。
+
 #include <QObject>
-#include <quickqanava/gtpo/node.h>
 #include <QString>
 #include <QPointer>
 #include <QQmlEngine>
 #include <QQuickItem>
+#include <quickqanava/gtpo/node.h>
 
 namespace qan {
 
@@ -14,85 +22,75 @@ class Edge;
 class Group;
 class NodeItem;
 
-// Phase 2+：qan::Node 继承 gtpo::node，把 node_base_t 设为 QObject
-//
-// TODO:
-// - class Node : public gtpo::node<QObject, qan::Graph, qan::Node, qan::Edge, qan::Group>
-// - Q_OBJECT
-// - 属性：label, locked, isProtected
-// - 持有 _item 指针（NodeItem）
-// - 静态工厂 delegate() / style()
-
 class Node : public gtpo::node<QObject, Graph, Node, Edge, Group>
 {
     Q_OBJECT
     QML_ELEMENT
-public:
-    //构造/析构
-    using super_t = gtpo::node<QObject, Graph, Node, Edge, Group>;
-    explicit Node(QObject* parent = nullptr);
-    virtual ~Node()=default;
-    Node(const Node& other)=delete;
 
-    //图
+public:
+    using super_t = gtpo::node<QObject, Graph, Node, Edge, Group>;
+
+    explicit Node(QObject* parent = nullptr);
+    virtual ~Node() = default;
+    Node(const Node& other) = delete;
+
+    // ── 图访问 ──
     Q_PROPERTY(Graph* graph READ getGraph CONSTANT FINAL)
     const Graph* getGraph() const noexcept;
     Graph* getGraph() noexcept;
 
-    //可视化项
+    // ── 可视化项 ──
     Q_PROPERTY(NodeItem* item READ getItem CONSTANT FINAL)
     NodeItem* getItem() noexcept;
     const NodeItem* getItem() const noexcept;
-    virtual void setItem(NodeItem* item)noexcept;
-protected:
-    QPointer<NodeItem> _item;
+    virtual void setItem(NodeItem* item) noexcept;
 
-    //标签
+    // ── 标签 ──
     Q_PROPERTY(QString label READ getLabel WRITE setLabel NOTIFY labelChanged FINAL)
     QString getLabel() const { return _label; }
     bool setLabel(const QString& label);
-Q_SIGNALS:
-    void labelChanged();
-private:
-    QString _label = "";
-    
-    //锁定/保护
-    Q_PROPERTY(bool locked READ getLocked WRITE setLocked NOTIFY lockedChanged FINAL)
-    bool getLocked() const{ return _locked; }
-    virtual bool setLocked(bool locked);
-Q_SIGNALS:
-    void lockedChanged();
-private:
-    bool _locked = false;
-    Q_PROPERTY(bool isProtected READ getIsProtected WRITE setIsProtected NOTIFY isProtectedChanged FINAL)
-    bool getIsProtected() { return _isProtected; }
-    bool setIsProtected(bool isProtected);
-Q_SIGNALS:
-    void protectedChanged();
-private:
-    bool _isProtected = false;
 
-    //组访问
+    // ── 锁定 / 保护 ──
+    Q_PROPERTY(bool locked READ getLocked WRITE setLocked NOTIFY lockedChanged FINAL)
+    bool getLocked() const { return _locked; }
+    virtual bool setLocked(bool locked);
+
+    Q_PROPERTY(bool isProtected READ getIsProtected WRITE setIsProtected NOTIFY isProtectedChanged FINAL)
+    bool getIsProtected() const { return _isProtected; }
+    bool setIsProtected(bool isProtected);
+
+    // ── 组访问 ──
     Q_PROPERTY(Group* group READ getGroup CONSTANT FINAL)
     const Group* getGroup() const { return get_group(); }
-    Group* getGroup() {return get_group(); }
+    Group* getGroup() { return get_group(); }
     Q_INVOKABLE bool hasGroup() const { return get_group() != nullptr; }
     Q_INVOKABLE bool isGroup() const { return is_group(); }
 
+    // ── 入度 / 出度 ──
     Q_PROPERTY(int inDegree READ getInDegree NOTIFY inDegreeChanged FINAL)
-    int getInDegree() const ;
-Q_SIGNALS:
-    void inDegreeChanged(int inDegree );
+    int getInDegree() const;
 
     Q_PROPERTY(int outDegree READ getOutDegree NOTIFY outDegreeChanged FINAL)
-    int getOutDegree() const ;
-Q_SIGNALS:
-    void outDegreeChanged(int outDegree );
+    int getOutDegree() const;
 
-public:
-    //静态工厂
-    static QQmlComponent* delegate(QQmlEngine &engine, QObject* parent=nullptr) noexcept;
-    static class NodeStyle* style(QObject* parent=nullptr) noexcept;
+    // ── 静态工厂 ──
+    static QQmlComponent* delegate(QQmlEngine& engine, QObject* parent = nullptr) noexcept;
+    static class NodeStyle* style(QObject* parent = nullptr) noexcept;
+
+Q_SIGNALS:
+    void labelChanged();
+    void lockedChanged();
+    void isProtectedChanged();
+    void inDegreeChanged();
+    void outDegreeChanged();
+
+protected:
+    QPointer<NodeItem> _item;
+
+private:
+    QString _label = "";
+    bool _locked = false;
+    bool _isProtected = false;
 };
 
 } // ::qan

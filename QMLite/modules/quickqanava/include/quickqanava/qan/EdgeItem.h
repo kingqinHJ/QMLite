@@ -26,12 +26,12 @@
 #include <QColor>
 #include <QPointF>
 #include <QPolygonF>
+#include <quickqanava/qan/Edge.h>
+#include <quickqanava/qan/NodeItem.h>
 
 namespace qan {
 
-class Edge;
 class Graph;
-class NodeItem;
 
 // Phase 2+：可视化的边图形项
 //

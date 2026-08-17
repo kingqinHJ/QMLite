@@ -6,9 +6,8 @@
 //
 // 组 = 普通节点 + is_group=true。可以容纳子节点。
 
-#include<QObject>
-#include<QQuickItem>
-#include<QQmlComponent>
+#include <QObject>
+#include <QQmlComponent>
 #include <quickqanava/qan/Node.h>
 
 namespace qan {
@@ -19,20 +18,16 @@ class Group : public Node
     QML_ELEMENT
 
 public:
-    explicit Group( QObject* parent = nullptr );
-    virtual ~Group() override=default;
-    Group( const Group& other ) = delete;
+    explicit Group(QObject* parent = nullptr);
+    virtual ~Group() override = default;
+    Group(const Group& other) = delete;
 
-    //组内节点
-    Q_INVOKABLE bool hasNode( const Node* node ) const;
+    // 组内节点
+    Q_INVOKABLE bool hasNode(const Node* node) const;
 
-    //组可视化项
-    GroupItem* getGroupItem() const;
-    const GroupItem* getGroupItem() const noexcept;
-    void setItem( GroupItem* item ) noexcept override;
-
-    static QQmlComponent* delegate(QQmlEngine &engine,QObject *parent = nullptr)noexcept;
-    static class NodeStyle* style(QObject *parent = nullptr) noexcept;
+    // 静态工厂（Phase 3+ 返回默认 QML 组组件）
+    static QQmlComponent* delegate(QQmlEngine& engine, QObject* parent = nullptr) noexcept;
+    static class NodeStyle* style(QObject* parent = nullptr) noexcept;
 };
 
 } // ::qan

@@ -31,9 +31,9 @@
 // Qt headers
 
 // QuickQanava headers
-#include "NodeItem.h"
-#include "Node.h"
-#include "NodeStyle.h"
+#include <quickqanava/qan/NodeItem.h>
+#include <quickqanava/qan/Node.h>
+#include <quickqanava/qan/NodeStyle.h>
 
 #include <QPointer>
 #include <QMouseEvent>
@@ -45,7 +45,7 @@
 
 namespace qan { // ::qan
 
-NodeItem::NodeItem( QQuickItem* parent ) noexcept
+NodeItem::NodeItem( QQuickItem* parent )
     : QQuickItem{parent}
 {
     //默认尺寸
@@ -56,9 +56,6 @@ NodeItem::NodeItem( QQuickItem* parent ) noexcept
     setAcceptedMouseButtons(Qt::LeftButton);
     setFlag(QQuickItem::ItemIsFocusScope);
     setFlag(QQuickItem::ItemAcceptsInputMethod);
-
-    //可拖拽
-    setFlag(QQuickItem::ItemIsMovable);
 }
 
 void NodeItem::setStyle( NodeStyle* style )
@@ -75,8 +72,8 @@ void NodeItem::mousePressEvent(QMouseEvent* event)
         _dragStartPos = event->pos();
         _dragging = true;
         event->accept();
-        //置顶：拖拽时把节点移到最前面。
-        setZ(++_maxZ)
+        // 置顶：拖拽时把节点移到最前面（提升 z 值）
+        setZ(1.0);
     }
     else{
         QQuickItem::mousePressEvent(event);
@@ -115,8 +112,8 @@ QSGNode* NodeItem::updatePaintNode(QSGNode* node, QQuickItem::UpdatePaintNodeDat
 {
     Q_UNUSED(data);
 
-    delete oldNode;
-    oldNode=nullptr;
+    delete node;
+    node = nullptr;
 
     // ── 创建一个简单的矩形节点作为背景 ──
     // 注意：QSGSimpleRectNode 只能画纯色矩形。

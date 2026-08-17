@@ -1,53 +1,36 @@
-// QuickQanava headers
-#in
-#include <quickqanava/qan/Node.h>
 // ============================================================================
-// Group 构造 — 设置 is_group=true
+// Group.cpp — qan::Group 实现
 // ============================================================================
+
+#include <quickqanava/qan/Group.h>
+
 namespace qan { // ::qan
 
-Group::Group(QObject *parent)
-    :Node{parent}
+Group::Group(QObject* parent)
+    : Node{parent}
 {
     // 关键：标记为组，使其可以容纳子节点
     this->set_is_group(true);
 }
 
-// ── 组内节点查詢 ──
+// ── 组内节点查询 ──
 bool Group::hasNode(const Node* node) const
 {
     return has_node(node);
 }
 
-// ── 可视化项 ──
-GroupItem* Group::getGroupItem() noexcept
-{
-    return qobject_cast<GroupItem*>(_item.data());
-}
-
-const GroupItem* Group::getGroupItem() noexcept
-{
-    return qobject_cast<const GroupItem*>(_item.data());
-}
-
-void Group::setItem(NodeItem *item)noexcept
-{
-    Node::setItem(item);
-    // GroupItem 特有的初始化可在此处进行
-}
-
 // ── 静态工厂 ──
-QQmlComponent *Group::delegate(QQmlEngine& engine,QObject* parent) noexcept
+QQmlComponent* Group::delegate(QQmlEngine& engine, QObject* parent) noexcept
 {
-    Q_UNUESED(engine);
-    Q_UNUESED(parent);
+    Q_UNUSED(engine);
+    Q_UNUSED(parent);
     return nullptr;
 }
-
 
 NodeStyle* Group::style(QObject* parent) noexcept
 {
-    Q_UNUSED(parent)
+    Q_UNUSED(parent);
     return nullptr;
 }
+
 } // ::qan

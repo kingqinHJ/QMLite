@@ -17,12 +17,12 @@
 #include <QQmlComponent>
 #include <QQmlParserStatus>
 #include <QPointer>
-#include <Memory>
+#include <memory>
 #include <quickqanava/gtpo/graph.h>
 
-#include"./Node.h"
-#include "./Edge.h"
-#include "./Group.h"
+#include <quickqanava/qan/Node.h>
+#include <quickqanava/qan/Edge.h>
+#include <quickqanava/qan/Group.h>
 
 namespace qan {
 
@@ -30,16 +30,12 @@ class NodeItem;
 class EdgeItem;
 class GroupItem;
 
-class Graph : public QQuickItem,
-            public gtpo::graph<QQuickItem, qan::Node, qan::Group, qan::Edge>,
-            public QQmlParserStatus
+class Graph : public gtpo::graph<QQuickItem, qan::Node, qan::Group, qan::Edge>
 {
     Q_OBJECT
     QML_ELEMENT
-    Q_INTERFACES(QQmlParserStatus)
 
     using super_t = gtpo::graph<QQuickItem, qan::Node, qan::Group, qan::Edge>;
-    // TODO: Phase 2 开始实现
 public:
     explicit Graph(QObject* parent = nullptr) noexcept;
     virtual ~Graph() override;
@@ -90,7 +86,7 @@ private:
 
 public:
     Q_PROPERTY(QQmlComponent* selectionDelegate READ getSelectionDelegate WRITE setSelectionDelegate NOTIFY selectionDelegateChanged FINAL)    
-    QQmlComponent* getSelectionDelegate() noexcept{return _selectionDelegate.data();};
+    QQmlComponent* getSelectionDelegate() noexcept{return _selectionDelegate.get();};
     void setSelectionDelegate(QQmlComponent* delegate);
 signals:
     void selectionDelegateChanged();

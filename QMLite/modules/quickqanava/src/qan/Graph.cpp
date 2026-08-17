@@ -31,12 +31,12 @@
 // Qt headers
 
 // QuickQanava headers
-#include "Edge.h"
-#include "Graph.h"
-#include "Node.h"
-#include "EdgeItem.h"
-#include "NodeItem.h"
-#include "Group.h"
+#include <quickqanava/qan/Edge.h>
+#include <quickqanava/qan/Graph.h>
+#include <quickqanava/qan/Node.h>
+#include <quickqanava/qan/EdgeItem.h>
+#include <quickqanava/qan/NodeItem.h>
+#include <quickqanava/qan/Group.h>
 
 #include<QQmlEngine>
 #include<QQmlContext>
@@ -45,7 +45,7 @@
 namespace qan { // ::qan
 
 Graph::Graph( QObject* parent /*= nullptr*/ ) noexcept
-    : QQuickItem{parent}
+    : super_t{qobject_cast<QQuickItem*>(parent)}
 {
     _containerItem = this;
 }
@@ -74,19 +74,19 @@ void Graph::setContainerItem( QQuickItem* item )
 
 void Graph::setNodeDelegate( QQmlComponent* delegate )
 {
-    _nodeDelegate.reset( delegate );
+    _nodeDelegate = delegate;
     emit nodeDelegateChanged();
 }
 
 void Graph::setEdgeDelegate( QQmlComponent* delegate )
 {
-    _edgeDelegate.reset( delegate );
+    _edgeDelegate = delegate;
     emit edgeDelegateChanged();
 }
 
 void Graph::setGroupDelegate( QQmlComponent* delegate )
 {
-    _groupDelegate.reset( delegate );
+    _groupDelegate = delegate;
     emit groupDelegateChanged();
 }
 
@@ -103,7 +103,7 @@ std::unique_ptr<QQmlComponent> Graph::createComponent( const QString& url )
         return nullptr;
     auto comp=std::make_unique<QQmlComponent>( engine, QUrl( url ),this );
     if(comp->isError()){
-        qWarning() << "Graph::createComponent():" << comp->errors();
+        qWarning() << "Graph::createComponent():" << comp->errorString();
         return nullptr;
     }
     return comp;
@@ -121,8 +121,8 @@ QQuickItem* Graph::createItemFromComponent( QQmlComponent* component )
     QObject* obj=component->beginCreate(ctx?ctx:engine->rootContext());
     if (!obj)
     {
-        qWarning() << "Graph::createItemFromComponent(): cannot create item from delegate" << component->errors()
-            << component->errors();
+        qWarning() << "Graph::createItemFromComponent(): cannot create item from delegate"
+                   << component->errorString();
         return nullptr;
     }
 
@@ -143,37 +143,10 @@ QQuickItem* Graph::createItemFromComponent( QQmlComponent* component )
 }
 
 
-QQuickItem* Graph::createItemFromComponent( QQmlComponent* component ,Node* node,Edge* edge,
-                                            Group* group) noexcept
-{
-    QQuickItem* item = createItemFromComponent( component );
-    if(!item)
-        return nullptr;
-    
-    // 根据类型绑定数据模型
-    if(node){
-        NodeItem *nodeItem = qobject_cast<NodeItem*>(item);
-        if(nodeItem)
-            node->setItem(nodeItem);
-    }
-    if(edge){
-        EdgeItem *edgeItem = qobject_cast<EdgeItem*>(item);
-        if(edgeItem)
-            edge->setItem(edgeItem);
-    }
-    if(group)
-    {
-        NodeItem *groupItem = qobject_cast<NodeItem*>(item);
-        if(groupItem)
-            group->setItem(groupItem);
-    }
-    return item;
-}
-
 void Graph::clearGraph() noexcept
 {
-        // 利用 gtpo::graph::clear() 销毁所有数据模型
+    // 利用 gtpo::graph::clear() 销毁所有数据模型
     // 对应的 QQuickItem 由 Qt 父子树自动删除
-    clear()
+    clear();
 }
 } // ::qan

@@ -32,6 +32,8 @@
 
 // QuickQanava headers
 #include <quickqanava/qan/Node.h>
+#include <quickqanava/qan/NodeItem.h>
+#include <quickqanava/qan/NodeStyle.h>
 
 namespace qan { // ::qan
 
@@ -71,7 +73,7 @@ bool Node::setLabel( const QString& label )
 {
     if ( _label != label ) {
         _label = label;
-        emit labelChanged( _label );
+        emit labelChanged();
         return true;
     }
     return false;
@@ -81,7 +83,7 @@ bool Node::setLocked( bool locked )
 {
     if ( _locked != locked ) {
         _locked = locked;
-        emit lockedChanged( _locked );
+        emit lockedChanged();
         return true;
     }
     return false;
@@ -91,7 +93,7 @@ bool Node::setIsProtected( bool isProtected )
 {
     if ( _isProtected != isProtected ) {
         _isProtected = isProtected;
-        emit protectedChanged( _isProtected );
+        emit isProtectedChanged();
         return true;
     }
     return false;

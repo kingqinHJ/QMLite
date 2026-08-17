@@ -37,10 +37,6 @@ file(GLOB_RECURSE QUICKQANAVA_REFERENCE_FILES CONFIGURE_DEPENDS
 # 创建库目标（三种模式可选）
 # ───────────────────────────────────────────────────────────────
 
-# 当前为骨架阶段：qan 层头文件含 Q_OBJECT 但无实现，先跳过 MOC
-# 待 Phase 2 填充 .cpp 后可移除此设置
-set_source_files_properties(${QUICKQANAVA_QAN_HEADERS} PROPERTIES SKIP_AUTOMOC ON)
-
 if(QUICKQANAVA_BUILD_SHARED)
     # 动态库模式
     add_library(quickqanava SHARED
