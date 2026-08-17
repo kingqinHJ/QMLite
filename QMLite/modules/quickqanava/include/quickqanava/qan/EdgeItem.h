@@ -4,21 +4,11 @@
 // EdgeItem.h — qan::EdgeItem 精简参考实现
 // ============================================================================
 //
-// 可视化边：在两个 NodeItem 之间画一条线。
-//
-// 核心功能：
-//   1) 持有 sourceItem / destinationItem 两个 NodeItem 引用
-//   2) 调用 updateItem() 根据两端坐标重新计算线几何
-//   3) 支持直线和贝塞尔曲线（lineType 切换）
-//   4) 可以绘制箭头（dstShape / srcShape）
-//
-// 属性：
-//   - sourceItem / destinationItem : 端点对应的 NodeItem
-//   - lineType : Straight / Curved
-//   - lineWidth / lineColor / dashed
-//   - dstShape / srcShape : 箭头形状（Arrow / Circle / None 等）
+// 可视化边：在两个 NodeItem 之间画一条直线。
 //
 // 绘制在 updatePaintNode() 中（QSG），不使用子 QML Item。
+// 注意：所有 Q_PROPERTY/getter/setter 必须在 public 区域（MOC + 外部调用），
+//      信号集中一个段，成员集中 private 段。
 // ============================================================================
 
 #include <QQuickItem>
@@ -33,119 +23,98 @@ namespace qan {
 
 class Graph;
 
-// Phase 2+：可视化的边图形项
-//
-// TODO:
-// - 继承 QQuickItem
-// - QML_ELEMENT
-// - 属性：p1, p2（端点）, c1, c2（贝塞尔控制点）
-// - 箭头几何：srcA1/A2/A3, dstA1/A2/A3
-// - updateItem()：根据 sourceItem/destinationItem 位置重计算几何
-// - 指向 qan::Edge 的 _edge 指针
-
 class EdgeItem : public QQuickItem
 {
     Q_OBJECT
     QML_ELEMENT
+
 public:
-    explicit EdgeItem( QQuickItem* parent = nullptr);
-    virtual ~EdgeItem() override= default;
-    EdgeItem( const EdgeItem& ) = delete;
+    explicit EdgeItem(QQuickItem* parent = nullptr);
+    virtual ~EdgeItem() override = default;
+    EdgeItem(const EdgeItem&) = delete;
 
-    //关联的边数据数据
+    // ── 关联的边数据 ──
     Q_PROPERTY(Edge* edge READ getEdge CONSTANT)
-    Edge* getEdge() noexcept{return _edge;}
-    void setEdge( Edge* edge ) noexcept{_edge = edge;}
-private:
-    QPointer<Edge> _edge;
+    Edge* getEdge() noexcept { return _edge; }
+    void setEdge(Edge* edge) noexcept { _edge = edge; }
 
-    //端点图形项
+    // ── 端点图形项 ──
     Q_PROPERTY(NodeItem* sourceItem READ getSourceItem WRITE setSourceItem NOTIFY sourceItemChanged FINAL)
-    NodeItem* getSourceItem() noexcept{return _sourceItem;}
-    void setSourceItem( NodeItem* item );
-signals:
-    void sourceItemChanged();
-private:
-    QPointer<NodeItem> _sourceItem;
+    NodeItem* getSourceItem() noexcept { return _sourceItem; }
+    void setSourceItem(NodeItem* item);
 
     Q_PROPERTY(NodeItem* destinationItem READ getDestinationItem WRITE setDestinationItem NOTIFY destinationItemChanged FINAL)
-    NodeItem* getDestinationItem() const noexcept{return _destinationItem;}
-    void setDestinationItem( NodeItem* item );
-signals:
-    void destinationItemChanged();
-private:
-    QPointer<NodeItem> _destinationItem;
+    NodeItem* getDestinationItem() const noexcept { return _destinationItem; }
+    void setDestinationItem(NodeItem* item);
 
-    //线类型
+    // ── 线类型 ──
     enum class LineType {
-        Straight=1,
-        Curved=2
+        Straight = 1,
+        Curved = 2
     };
     Q_PROPERTY(LineType lineType READ getLineType WRITE setLineType NOTIFY lineTypeChanged FINAL)
-    LineType getLineType() const {return _lineType;}
-    void setLineType( LineType type ) {_lineType = type;updateItem();}
-signals:
-    void lineTypeChanged();
-private:
-    LineType _lineType = LineType::Straight;
+    LineType getLineType() const { return _lineType; }
+    void setLineType(LineType type) { _lineType = type; updateItem(); }
 
-    //线属性
+    // ── 线颜色 ──
     Q_PROPERTY(QColor lineColor READ getLineColor WRITE setLineColor NOTIFY lineColorChanged FINAL)
-    QColor getLineColor() const {return _lineColor;}
-    void setLineColor( const QColor& color ) {_lineColor = color;update();}
-signals:
-    void lineColorChanged();
-private:
-    QColor _lineColor {"black"};
+    QColor getLineColor() const { return _lineColor; }
+    void setLineColor(const QColor& color) { _lineColor = color; update(); }
 
+    // ── 线宽 ──
     Q_PROPERTY(qreal lineWidth READ getLineWidth WRITE setLineWidth NOTIFY lineWidthChanged FINAL)
-    qreal getLineWidth() const {return _lineWidth;}
-    void setLineWidth( qreal width ) {_lineWidth = width;update();}
-signals:
-    void lineWidthChanged();
-private:
-    qreal _lineWidth = 3.0;
+    qreal getLineWidth() const { return _lineWidth; }
+    void setLineWidth(qreal width) { _lineWidth = width; update(); }
 
+    // ── 虚线 ──
     Q_PROPERTY(bool dashed READ getDashed WRITE setDashed NOTIFY dashedChanged FINAL)
-    bool getDashed() const {return _dashed;}
-    void setDashed( bool dashed ) {_dashed = dashed;update();}
-signals:
-    void dashedChanged();
-private:
-    bool _dashed = false;
-    //箭头大小
-    Q_PROPERTY(qreal arrowSize READ getArrowSize WRITE setArrowSize NOTIFY arrowSizeChanged FINAL)
-    qreal getArrowSize() const {return _arrowSize;}
-    void setArrowSize( qreal size ) {_arrowSize = size;update();}
-signals:
-    void arrowSizeChanged();
-private:
-    qreal _arrowSize = 6.0;
+    bool getDashed() const { return _dashed; }
+    void setDashed(bool dashed) { _dashed = dashed; update(); }
 
-    //端点坐标
+    // ── 箭头大小 ──
+    Q_PROPERTY(qreal arrowSize READ getArrowSize WRITE setArrowSize NOTIFY arrowSizeChanged FINAL)
+    qreal getArrowSize() const { return _arrowSize; }
+    void setArrowSize(qreal size) { _arrowSize = size; update(); }
+
+    // ── 端点坐标 ──
     Q_PROPERTY(QPointF p1 READ getP1 WRITE setP1 NOTIFY p1Changed FINAL)
-    QPointF getP1() const {return _p1;}
-    void setP1( const QPointF& p ) {_p1 = p;update();}
-signals:
-    void p1Changed();
-private:
-    QPointF _p1;
+    QPointF getP1() const { return _p1; }
+    void setP1(const QPointF& p) { _p1 = p; update(); }
 
     Q_PROPERTY(QPointF p2 READ getP2 WRITE setP2 NOTIFY p2Changed FINAL)
-    QPointF getP2() const {return _p2;}
-    void setP2( const QPointF& p ) {_p2 = p;update();}
-signals:
-    void p2Changed();
-private:
-    QPointF _p2;
+    QPointF getP2() const { return _p2; }
+    void setP2(const QPointF& p) { _p2 = p; update(); }
 
-    //更新几何
+    // ── 几何更新（节点移动后调用）──
 public slots:
-    void updateItem();  
+    void updateItem();
+
+signals:
+    void sourceItemChanged();
+    void destinationItemChanged();
+    void lineTypeChanged();
+    void lineColorChanged();
+    void lineWidthChanged();
+    void dashedChanged();
+    void arrowSizeChanged();
+    void p1Changed();
+    void p2Changed();
 
 protected:
-    QSGNode* updatePaintNode( QSGNode* node, UpdatePaintNodeData* data ) override;
-    void geometryChanged( const QRectF& newGeometry, const QRectF& oldGeometry ) override;
+    QSGNode* updatePaintNode(QSGNode* node, UpdatePaintNodeData* data) override;
+    void geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry) override;
+
+private:
+    QPointer<Edge> _edge;
+    QPointer<NodeItem> _sourceItem;
+    QPointer<NodeItem> _destinationItem;
+    LineType _lineType = LineType::Straight;
+    QColor _lineColor{ "black" };
+    qreal _lineWidth = 3.0;
+    bool _dashed = false;
+    qreal _arrowSize = 6.0;
+    QPointF _p1;
+    QPointF _p2;
 };
 
 } // ::qan

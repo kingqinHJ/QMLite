@@ -97,6 +97,12 @@ protected:
     std::unique_ptr<QQmlComponent> createComponent(const QString& url);
     QQuickItem* createItemFromComponent(QQmlComponent* delegate);
 
+    // ── 工厂：QML 可调用 ──
+    // insertNode(x, y, label)   — 创建节点数据模型 + NodeItem 图形项
+    // insertEdge(src, dst)      — 创建边数据模型 + EdgeItem 图形项
+    Q_INVOKABLE qan::Node* insertNode(qreal x, qreal y, const QString& label);
+    Q_INVOKABLE qan::Edge* insertEdge(qan::Node* source, qan::Node* destination);
+
     Q_INVOKABLE void clearGraph() noexcept;
 };
 

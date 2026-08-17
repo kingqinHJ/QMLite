@@ -8,6 +8,12 @@
 #include "messagequeue.h"
 #include "myparserstatus.h"
 #include "modules/quickqanava/src/test/GtpoTest.h"
+#include "modules/quickqanava/include/quickqanava/qan/Graph.h"
+#include "modules/quickqanava/include/quickqanava/qan/Node.h"
+#include "modules/quickqanava/include/quickqanava/qan/Edge.h"
+#include "modules/quickqanava/include/quickqanava/qan/Group.h"
+#include "modules/quickqanava/include/quickqanava/qan/NodeItem.h"
+#include "modules/quickqanava/include/quickqanava/qan/EdgeItem.h"
 
 void RegisterType()
 {
@@ -19,6 +25,14 @@ void RegisterType()
     qmlRegisterType<MessageQueue>("com.mycompany.messageQueue",1,0,"MessageQueue");
     qmlRegisterType<MyParserStatus>("com.mycompany.myParserStatus",1,0,"MyParserStatus");
     qmlRegisterType<GtpoTest>("com.mycompany.gtpo",1,0,"GtpoTest");
+
+    // QuickQanava qan 层：Phase 2 基础可视化
+    qmlRegisterType<qan::Graph>("com.quickqanava",1,0,"Graph");
+    qmlRegisterType<qan::Node>("com.quickqanava",1,0,"Node");
+    qmlRegisterType<qan::Edge>("com.quickqanava",1,0,"Edge");
+    qmlRegisterType<qan::Group>("com.quickqanava",1,0,"Group");
+    qmlRegisterType<qan::NodeItem>("com.quickqanava",1,0,"NodeItem");
+    qmlRegisterType<qan::EdgeItem>("com.quickqanava",1,0,"EdgeItem");
 }
 
 int main(int argc, char *argv[])

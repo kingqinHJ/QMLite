@@ -56,6 +56,10 @@ NodeItem::NodeItem( QQuickItem* parent )
     setAcceptedMouseButtons(Qt::LeftButton);
     setFlag(QQuickItem::ItemIsFocusScope);
     setFlag(QQuickItem::ItemAcceptsInputMethod);
+
+    // 关键：告诉场景图"这个 item 有自定义内容"，
+    // 没有它 updatePaintNode() 不会被调用，节点显示不出来
+    setFlag(QQuickItem::ItemHasContents);
 }
 
 void NodeItem::setStyle( NodeStyle* style )

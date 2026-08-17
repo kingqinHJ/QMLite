@@ -19,6 +19,9 @@ EdgeItem::EdgeItem(QQuickItem* parent)
     // 边不接收鼠标事件，让事件穿透到节点
     setAcceptedMouseButtons(Qt::NoButton);
     setZ(-1);   // 边始终在节点下方
+
+    // 关键：让场景图调用 updatePaintNode()，否则边画不出来
+    setFlag(QQuickItem::ItemHasContents);
 }
 
 // ── 端点绑定 ──

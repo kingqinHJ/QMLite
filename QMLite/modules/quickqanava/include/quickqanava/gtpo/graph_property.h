@@ -472,6 +472,9 @@ namespace gtpo {
 template <class graph_t>
 class graph_property_impl {
     friend graph_t;   // 只有 graph 能调用 set_graph()
+    // gtpo::graph 模板（insert_node/insert_edge 内部调 node/edge 的 set_graph）
+    template<class GraphBaseT, class NodeT, class GroupT, class EdgeT>
+    friend class graph;
 
 public:
     graph_property_impl() = default;
